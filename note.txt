@@ -1,0 +1,2 @@
+fichier routes.yaml
+on a enlevé le # des commentaires pour laisser les index path et controller sans commentaire
