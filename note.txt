@@ -1,2 +1,36 @@
+*****************************************************
+***************** VENDREDI 02 AVRIL *****************
+*****************************************************
+
+*****************
 fichier routes.yaml
 on a enlevé le # des commentaires pour laisser les index path et controller sans commentaire
+
+*****************
+Shortcut pour phpstorm : https://resources.jetbrains.com/storage/products/phpstorm/docs/PhpStorm_ReferenceCard.pdf?_ga=2.236815939.372208002.1617349536-134175520.1617349536
+
+*****************
+Exercice:
+1- Créer un nouveau controller : UserController
+
+2- Créer une nouvelle route/user/register
+
+3- Affichez sur la page h1. INSCRIPTION
+
+*****************
+Commande de terminal
+
+- pour voir les pages crée:
+php bin/console debug:router
+
+*****************
+@Route("/category", name="default_category", methods={"GET"})
+On va mettre un paramètre de route à la place de "/category" pour pouvoir mettre plusieurs catégorie ex: politique, société etc.
+on crée un paramètre et symfony va récupérer l'alias
+@Route("/{alias}", name="default_category", methods={"GET"})
+
+*****************
+TWIG
+https://twig.symfony.com/
+
+{{ }} = echo dans php
