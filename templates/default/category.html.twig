@@ -1,15 +1,52 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ alias | title }}</title>
-</head>
-<body>
-    <h1>{{ alias | title }}</h1>
-    <h3>Bienvenue sur la page {{ alias | title }}</h3>
+{% extends "base.html.twig" %}
 
-</body>
-</html>
+{% block title %}
+    Page Catégorie
+{% endblock %}
+
+{% block body %}
+    <div class="p-3 mx-auto text-center">
+        <h1 class="display-4">Catégorie</h1>
+    </div>
+
+    <div class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 mt-4">
+                    <div class="card shadow-sm">
+                        <img src="https://via.placeholder.com/500x350" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mt-4">
+                    <div class="card shadow-sm">
+                        <img src="https://via.placeholder.com/500x350" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mt-4">
+                    <div class="card shadow-sm">
+                        <img src="https://via.placeholder.com/500x350" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

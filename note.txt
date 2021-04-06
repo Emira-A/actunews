@@ -34,3 +34,125 @@ TWIG
 https://twig.symfony.com/
 
 {{ }} = echo dans php
+
+*****************************************************
+***************** LUNDI 06 AVRIL *****************
+*****************************************************
+
+*****************
+BASE DE DONNEES
+
+Pour mettre en place une base de données sur Symfony (ORM = object relation maping)
+
+Configuration BDD:
+Dans le projet Actuel News -> .env -> DATABASE_URL=« « 
+
+les fichiers env. sont des fichiers d'environnements
+éditer des variables en fonction d'ou on se situe
+.env.local va prendre le dessus de .env mais uniquement sur notre machine. Pas pour vocation d'être partager uniquement pour nous.
+On y configure notre base de données
+On remplace:
+DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7"
+par:
+DATABASE_URL="mysql://root:root@127.0.0.1:8889/actunews?serverVersion=5.7"
+
+Permet de créer la BDD depuis le fichier .env et .env.local
+On note la commande ci-dessous dans le terminal de phpStorm
+php bin/console doctrine:database:create
+
+Pour créer des classes:
+php bin/console make:entity Category (=nom de la classe avec la Maj)
+
+Puis on lui attribut des propriétés:
+ici on mets juste => name
+puis => string entrer
+puis caractère => 80
+puis sans nom => no ou entrer
+puis est-ce que j'ai une autre propriété? On ajoute l'alias => alias
+puis => string entrer
+puis caractère => 80
+puis no
+puis entrer 2 fois
+
+===> SYMFONY A CREE LA CLASSE POUR NOUS (sur src->Entity->Category.php)
+Symfony peut faire la mise en place sql
+
+Pour refaire une classe ARTICLE il faut fermer et rouvrir le terminal, vérifier qu'on est bien sur le dossier et remettre la commande:
+php bin/console make:entity Post (ici le nom de la classe c'est Post)
+Propriété => title
+Type=> entrer string
+Length=> entrer 255
+fields null => entrer
+
+Autres propriété?=> alias
+Puis propriété => image
+Type=> entrer string
+Length=> entrer 255
+fields null => entrer
+
+Puis propriété content
+Type=> text
+fields null => NO
+
+*****************
+CREATION DES UTILISATEURS
+
+Il faut OBLIGATOIREMENT faire la commande ci-dessous en premier si on a une table qui va contenir des utilisateurs:
+php bin/console make:user
+puis entrer à chaque question=> user => yes => property => yes
+
+Puis on ajoute des propriétés:
+php bin/console make:entity User
+
+Puis new propriété name => firstname
+puis string =>entrer
+puis lenght =>80
+puis field => entrer (no)
+
+Puis new propriété name => lastname
+puis string =>entrer
+puis lenght =>80
+puis field => entrer (no)
+
+Entrer pour sortir
+
+Pour automatiquement mettre notre base de donnée à jour:
+php bin/console doctrine:schema:update --force
+
+Il crée mes 3 tables (catégory, post et user) dans PhpMyAdmin
+Toutes les modifications se font uniquement dans nos entités
+On ne fait pas de modification de nos propriétés sur PhpMyAdmin, on va sur le fichier de notre entité (exemple post.php)
+Puis on refait la commande pour mettre à jour la BDD.
+
+
+php bin/console doctrine:database:drop --force ===>>> supprimer la BDD
+
+
+*****************
+CREER DES RELATIONS ENTRE LES TABLES DE LA BDD
+
+On se met sur l'entité POST:
+php bin/console make:entity Post
+New property name => Category
+Si on veut 1 cat par artcile category si plusieurs cat par article categories au pluriel
+Field type => relation
+Classe => Category
+Relation Type?=> ManyToOne
+Post category null? => NO
+Add new property to category? => Yes
+New field name inside Category => Yes
+Automatically delete => no
+
+Puis on ajoute une nouvelle relation:
+New property name => user
+Field type => relation
+Classe => User
+Relation Type?=> ManyToOne
+Post category null? => NO
+Add new property to category? => Yes
+New field name inside Category => Yes
+Automatically delete => NO
+
+Puis on l'enregistre sur la BDD:
+php bin/console doctrine:schema:update --force
+
