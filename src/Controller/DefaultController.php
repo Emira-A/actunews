@@ -5,7 +5,8 @@ namespace App\Controller;
 
 
 
-
+use App\Entity\Category;
+use App\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +19,15 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        return $this->render('default/index.html.twig');
+        // Recuperation des articles de la BDD
+        $posts = $this->getDoctrine()
+            ->getRepository(Post::class)
+                            // chemin vers ma classe Post
+            ->findAll(); // findAll() récupère tout nos articles de la BDD
+
+        return $this->render('default/index.html.twig', [
+            'posts' => $posts
+        ]);
         //return new Response('<h1>ACCUEIL</h1>');
         
     }
@@ -27,15 +36,16 @@ class DefaultController extends AbstractController
      *Page Categorie
      * http://localhost:8000/politique
      * @Route("/{alias}", name="default_category", methods={"GET"})
+     *
      * avec la ligne ci-dessus on crée la route sans aller dans routes.yaml
      * toujours ajouter le nom -> name=""
      * toujours ajouter la méthode pour sécurisé l'application
      */
 
-    public function category($alias)
+    public function category(Category $category)
     {
         return $this->render('default/category.html.twig', [
-            'alias' => $alias
+            'category' => $category
         ]);
         //return new Response("<h1>CATEGORIE : $alias</h1>");
     }
@@ -46,10 +56,10 @@ class DefaultController extends AbstractController
      * @Route("/{category}/{alias}_{id}.html", name="default_post", methods={"GET"})
      */
 
-    public function post($alias, $id, $category)
+    public function post(Post $post)
     {
         return $this->render('default/post.html.twig', [
-            'alias' => $alias
+            'post' => $post
     ]);
         //return new Response("<h1>ARTICLES : $id - $alias</h1>");
     }

@@ -36,7 +36,7 @@ https://twig.symfony.com/
 {{ }} = echo dans php
 
 *****************************************************
-***************** LUNDI 06 AVRIL *****************
+***************** MARDI 06 AVRIL *****************
 *****************************************************
 
 *****************
@@ -155,4 +155,75 @@ Automatically delete => NO
 
 Puis on l'enregistre sur la BDD:
 php bin/console doctrine:schema:update --force
+
+****************************
+ATELIER
+****************************
+En vous appuyant sur les notions vu ensemble ce matin ; vous devez mettre en place les éléments suivant sur votre projet e-shop :
+
+1. Créer votre fichier "base.html.twig" puis en vous aidant du framework CSS boostrap et de l'héritage de thème TWIG ; mettez en place vos pages : Accueil, Catégories et Produit.
+
+2. Créer ensuite vos différentes entités : Product, Category et User.
+Vous mettrez aussi en place les relations entres-elles.
+Attention, dans cet exercice, un produit peut être dans plusieurs catégories.
+
+3. BONUS / CHALLENGE : En vous aidant de la documentation de symfony sur les fixtures ; vous mettrez en place dans le fichier AppFixtures des données de démonstration pour les catégories, users et articles.
+https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html#writing-fixtures
+
+php bin/console d:s:v ==> pour voir la console
+
+
+class AppFixtures extends Fixture
+{
+    public function load(ObjectManager $manager)
+    {
+
+        // todo create user
+        $user = new User();
+        $user->setFirstname('Jane');
+        $user->setLastname('DOE');
+        $user->setPassword('janedoe');
+        $user->setRoles(['ROLE_USER']);
+
+        // create 20 products! Bam!
+        for ($i = 0; $i < 20; $i++) {
+            $product = new Product();
+            $product->setName('product '.$i);
+            $product->setProduct('lorem ipsum');
+            $product->setPrice(mt_rand(10, 100));
+            $product->setUser($user);
+
+            $manager->persist($user);
+            $manager->persist($product);
+        }
+
+        $manager->flush();
+    }
+
+CORRECTION BONUS
+https://github.com/hugoliegeard/eShop/blob/master/src/DataFixtures/AppFixtures.php
+
+*****************************************************
+***************** MERCREDI 07 AVRIL *****************
+*****************************************************
+
+LES FIXTURES
+
+https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
+
+https://github.com/FakerPHP/Faker
+
+Va générer des phrases, des noms ect. Un peu plus proche de la réalité que juste du lorem ipsum
+https://fakerphp.github.io/
+
+On installe les fixtures dans le terminal avec la commande:
+symfony composer require --dev orm-fixtures
+Le dossier DataFixtures arrive dans notre dossier src, avec le fichier AppFixtures.php
+
+Puis on installe les fakers avec la commande:
+composer require fakerphp/faker
+
+On mets nos fixtures sur notre fichiers appFixtures puis on mets dans le terminal:
+php bin/console doctrine:fixtures:load
+
 

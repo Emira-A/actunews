@@ -1,17 +1,18 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">ActuNews</a>
+    <a class="navbar-brand" href="{{ path('index') }}">ActuNews</a>
+                            {# on utilise path pour donner le chemin de la page en utilisant le nom qu'on lui a donner dans notre defaultController ou dans le fichier route #}
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-link" href="#">Accueil</a>
-            <a class="nav-link" href="#">Politique</a>
-            <a class="nav-link" href="#">Economie</a>
-            <a class="nav-link" href="#">Social</a>
-            <a class="nav-link" href="#">Santé</a>
-            <a class="nav-link" href="#">Sports</a>
-            <a class="nav-link" href="#">Culture</a>
+            <a class="nav-link" href="{{ path('index') }}">Accueil</a>
+            <a class="nav-link" href="{{ path('default_category', {'alias' : 'politique'}) }}">Politique</a>
+            <a class="nav-link" href="{{ path('default_category', {'alias' : 'economie'}) }}">Economie</a>
+            <a class="nav-link" href="{{ path('default_category', {'alias' : 'sante'}) }}">Santé</a>
+            <a class="nav-link" href="{{ path('default_category', {'alias' : 'sport'}) }}">Sports</a>
+            <a class="nav-link" href="{{ path('default_category', {'alias' : 'culture'}) }}">Culture</a>
         </div>
     </div>
 </nav>
