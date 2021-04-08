@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+
+    {% block title %}
+        Rédiger un article
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ parent() }} {# permet de conserver les données dans le block parent, de ne pas les écrasser#}
+        <script src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script>
+
+        <script>
+                ClassicEditor.create( document.querySelector( '#form_content' ) );
+        </script>
+    {% endblock %}
+
+    {% block body %}
+
+        <div class="container">
+            <div class="row">
+                <div class="col-8 mx-auto">
+                    <h3 class="my-4 text-center">Rédiger un Article</h3>
+                     {# Permet d'afficher un formulaire  #}
+                    {{ form(form) }}
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}

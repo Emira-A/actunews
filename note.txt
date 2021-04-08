@@ -226,4 +226,55 @@ composer require fakerphp/faker
 On mets nos fixtures sur notre fichiers appFixtures puis on mets dans le terminal:
 php bin/console doctrine:fixtures:load
 
+php bin/console doctrine:schema:update --force
 
+*****************************************************
+***************** JEUDI 08 AVRIL *****************
+*****************************************************
+LE FORMULAIRE
+La doc pour choisir les Type que l'on met sur notre POstController pour creer le formulaire
+https://symfony.com/doc/current/forms.html#form-types
+https://symfony.com/doc/current/reference/forms/types.html
+
+
+Pour mettre boostrap sur notre formulaire
+https://symfony.com/doc/current/form/bootstrap4.html
+On va sur:
+config -> packages -> twig.yaml
+on met le code: form_themes: ['bootstrap_4_layout.html.twig']
+
+liens CSS:
+https://webpack.js.org/
+https://www.alsacreations.com/tuto/lire/1754-debuter-avec-webpack.html
+
+Editeur qui genere le code html des textes
+https://ckeditor.com
+https://cdn.ckeditor.com -> pour récupérer les codes à mettre dans notre projet
+
+On met le code ci dessous dans notre fichier create.html.twig, dans un block javascript:
+<script src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script>
+<script>
+        ClassicEditor.create( document.querySelector( '#form_content' ) );
+</script>
+
+
+CORRECTION DE L'ERREUR DE L'ATELIER
+
+dans la console:
+php bin/console d:s:u -f
+
+php bin/console m:e Product
+
+new property name -> categories
+field type -> relation
+what class should this entity be related to -> Category
+what type of relationship -> ManyToMany
+new property to Category -> yes
+new field name inside Category [products] -> entrer
+andd another-> enter
+
+php bin/console d:f:l
+purged -> yes
+
+On vide les caches
+php bin/console c:c
