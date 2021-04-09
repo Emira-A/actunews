@@ -278,3 +278,103 @@ purged -> yes
 
 On vide les caches
 php bin/console c:c
+
+*****************************************************
+***************** VENDREDI 09 AVRIL *****************
+*****************************************************
+
+VALIDATION DU FORMULAIRE
+https://symfony.com/doc/current/validation.html
+https://symfony.com/doc/current/validation.html#basic-constraints
+
+Dans notre fichier Post.php on mets des Asserts dans nos privates:
+Dans la partie commentaire au dessus de chaque private $ on choisis les vérifications que l'on souhaite faire.
+Ici par exemple:
+
+/**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Image(mimeTypesMessage="Attention, véérifier le format de votre image.")
+     * @Assert\NotBlank(message="Vous devez choisir une image")
+     */
+    private $image;
+
+On a mis un @Assert\Image pour indiquer à l'utilisateur de vérifier le format
+On a mis un @Assert\NotBlank pour rendre l'image obligatoire à la validationd e l'article
+
+PUIS ON VA DANS LE FICHIER PostController
+
+Dans notre public function create on ajoute un paramètre:
+La classe Request $request
+!!!! il y a 4 CLasses qui porte le nom "Request" - FAIRE ATTENTION
+on selectionne le request 'httpFoundation' !!!
+
+Traitement du Formulaire:
+Puis sous notre -> getForm(); et avant notre return on ajoute:
+$form->handleRequest($request);
+
+Puis on vérifie que le formulaire à été envoyer et qu'il est valide
+ if( $form->isSubmitted() && $form->isValid()){
+            dd($post);
+        }
+
+        dd= équivalant d'un varDump
+
+        Ensuite on ouvre notre create.html.twig et on ajoute:
+        {{ form(form, {attr: {novalidate: 'novalidate'}}) }}
+        dans notre div afin de permettre d'afficher le formulaire
+
+On retourne sur notre PostController.php
+On fait un dump($post); dans notre public function create  puis on retourne sur le navigateur et on soumet un artcile
+En envoyant le formulaire on a les 2 vardump qui apparaissent à l'acran
+le premier vide -> avant soumission du formulaire
+le deuxième -> avec les informations que l'on a rentrer
+Symfony a validé les informations soumis dans le formulaire avant de les valider
+
+On retourne au traitement du formulaire =
+
+Ajout de l'image:
+https://symfony.com/doc/current/controller/upload_file.html
+On récupère le code sur la doc et on le colle dans notre if($form...)
+On modifie pour mettre $image
+On importe la classe UploadedFile et le FileException
+
+Puis on ajoute dans les paramètre de notre public function create la class et variable:
+SluggerInterface $slugger
+Nous permet de générer des alias
+
+Puis on va stoker les images donc on va dans:
+config->service.yaml
+dans 'parameters:' on colle:
+brochures_directory: '%kernel.project_dir%/public/uploads/brochures'
+ICI on modifie le 'brochures' par 'image' et le dossier 'brochures' par 'image'
+Donc on retourne sur notre PostController et on modifie le paramètre de notre getParameter:
+try {
+    $image->move(
+        $this->getParameter('images_directory'),
+        $newFilename
+    );
+
+Dans sauvegarde de la BDD
+$em = entity manager
+
+_________________________
+On supprime les articles dans la bdd directement e phpMyAdmin
+
+On va dans notre fichier index.html.twig:
+-> dans la balise img on modifie la src en mettant asset('')
+-> <img src="{{ asset('uploads/images/' ~ post.image) }}"
+(on va chercher les images dans le dossier uploads qui s'est créé:
+-> public -> uploads -> images)
+
+Notification de confirmation:
+On ajoute dans notre postcontroller:
+$this->addFlash('success', "Félicitations, votre article est en ligne.");
+
+https://symfony.com/doc/current/controller.html#flash-messages
+
+Puis On ajoute le message dans notre post.html.twig:
+{% for message in app.flashes('success') %}
+     <div class="alert alert-success">
+        {{ message }}
+     </div>
+{% endfor %}

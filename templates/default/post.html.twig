@@ -13,11 +13,18 @@
     <div class="py-5 bg-light">
         <div class="container">
             <div class="row">
-                <div class="jumbotron">
-                    <p>{{ post.user.firstname }} {{ post.user.lastname }}</p>
-                    <img src="{{ post.image }}" alt="{{ post.title }}">
-                    {{ post.content | raw }}
-                    {# raw va autoriser à utiliser les données de l'article #}
+                <div class="col">
+                    {% for message in app.flashes('success') %}
+                         <div class="alert alert-success">
+                             {{ message }}
+                         </div>
+                    {% endfor %}
+                     <div class="jumbotron">
+                        <p>{{ post.user.firstname }} {{ post.user.lastname }}</p>
+                        <img class="col-12" src="{{ asset('uploads/images/' ~ post.image ) }}" alt="{{ post.title }}">
+                        {{ post.content | raw }}
+                        {# raw va autoriser à utiliser les données de l'article #}
+                    </div>
                 </div>
             </div>
         </div>

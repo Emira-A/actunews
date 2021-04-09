@@ -20,7 +20,7 @@
                 <div class="col-8 mx-auto">
                     <h3 class="my-4 text-center">Rédiger un Article</h3>
                      {# Permet d'afficher un formulaire  #}
-                    {{ form(form) }}
+                    {{ form(form, {attr: {novalidate: 'novalidate'}}) }}
                 </div>
             </div>
         </div>

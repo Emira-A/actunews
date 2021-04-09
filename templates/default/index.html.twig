@@ -22,7 +22,7 @@
 
                 <div class="col-md-4 mt-4">
                     <div class="card shadow-sm">
-                        <img src="{{ post.image }}" class="card-img-top" alt="{{ post.title }}">
+                        <img src="{{ asset('uploads/images/' ~ post.image ) }}" class="card-img-top" alt="{{ post.title }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ post.title }}</h5>
                             <a href="{{ path('default_post', {
