@@ -378,3 +378,117 @@ Puis On ajoute le message dans notre post.html.twig:
         {{ message }}
      </div>
 {% endfor %}
+
+
+*****************************************************
+***************** LUNDI 10 AVRIL *****************
+*****************************************************
+
+Formulaire d'inscription
+
+On va sur UserController et on note la @Route (/user/register)
+
+On ajoute "inscription" dans le fichier nav.html.twig
+
+On ajoute le fichier register.html.twig dans le return, puis en cliquant dessus il se créer
+
+puis on retourne sur UserController dans la public function:
+(AbstractController contient toutes les fonctions qu'on utilise)
+
+On créer le formulaire:
+-> Bien prendre le TextType de symfony form et non doctrine
+
+On ajoute le Request $request dans la fonction
+-> Bien prendre 'Request httpFoundation'
+
+On fait ensuite l'enregistrement en BDD
+-> Ajouter le |POST dans la method avec le GET
+-> bien mettre isSubmitted() avant le isValid() dans le traitement de formulaire
+-> on ajoute UserPasswordEncoderInterface $encoder dans la public fonction pour encoder le mot de passe
+Et on ajoute le code ci dessous dans le if de notre traitement du formulaire:
+$user->setPassword(
+    $encoder->encodePassword(
+        $user,
+        $user->getPassword()
+    )
+);
+
+-> on va dans le fichier User.phh, on ajoute dans les commentaires de la class User:
+@UniqueEntity(
+ *     fields={"email"},
+ *     message="Ce compte existe déjà!"
+ * )
+=> permet de ne prévenir l'utilisateur si l'adresse mail est déjà enregistrer en BDD
+
+-> on ajoute ensuite le flash.
+
+Puis on passe sur la console pour l'authentification:
+
+php bin/console make:auth
+-> what style of authentification = [1]
+-> class name of authentification = AppLoginAuthenticator (on choisis le nom)
+-> name for the controller class (par defautl SecurityController)  = entrer
+-> générer un logout = yes
+
+On a un dossier Security qui s'est crée dans src
+-> on trouve le fichier AppLoginAuthenticator.php
+ligne 100, a la fin du fichier:
+ -> on efface le throw new \Exception() et on décommente le 'return new RedirectResponse'
+ -> on met notre page 'index' dans le ->generate
+
+ On ouvre le fichier SecurityController.php dans le dossier controller (qui s'est crée)
+ ->on peut modifier la route de nos fonctions si on le souhaite:
+ ici on ajoute /user devant notre /login et logout dans le @Route
+
+ On retourne ensuite sur notre nav.html.twig pour ajouter le lien 'login'.
+ On peut modifier les css et le texte sur le fichier login.html.twig dans le dossier security.
+
+
+On retroune sur notre nav.html.twig:
+-> ajout du lien de déconnexion dans la nav
+-> on met = {{ dump(app.user) }} sous la nav pour vérifier si un utilisateur est connecté ou non
+-> On ajoute une condition pour vérifier que l'utilisateur est connecté =
+si il est connecter j'affiche 'déconnexion' dans la nav,
+sinon j'affiche 'connexion' et 'inscription' =
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+lien ahref déconnexion et rédiger un article
+{% else %}
+lien ahref connexion et inscription
+{% endif %}
+
+LES ROLES
+symfony nous permet de pouvoir choisir des roles pour les utilisateurs. On peut mettre autant de roles que l'on souhaite, la seule contraite est d'avoir toujours le ROLE_ et d'être en majuscule
+ex: ROLE_USER
+    ROLE_SUSCRIBER (pour les user payant)
+    ROLE_AUTHOR (pour les journalistes)
+    ROLE_EDITOR (pour le chef de redac)
+    ROLE_ADMIN (pour celui qui a tous les acces) etc.L
+Les roles ne se déclare pas. Ils doivent juste être dans la BDD.
+Dans symfony pour vérifier le role de celui qui se connecte, on ajoute une condition dans ma nav.html.twig:
+{% if is_granted('ROLE_AUTHOR') %}
+{% endif%}
+
+On peut ajouter autant de role que l'on souhaite, le role d'author ici par exemple devra etre mis manuellement par l'admin dans la bdd ou alors il faudra développer une appli de gestion pour pouvoir changer les roles des utilisateurs.
+
+ATTENTION
+Même si on a enlevé le bouton "rediger un article" pour les utilisateur non author, si on a le lien url on y a quand même accés
+Comment la rendre accessible uniquement pour les author?
+
+=> AUTORISATION
+On va sur post.controller, et on ajoute sur notre public function:
+     * @IsGranted("ROLE_AUTHOR")
+dans le commentaire au dessus de notre route.
+(pour la soutenance, trouver dans la doc comment faire une page d'erreur personnalisé (et ajouter la photo d'Hugo dessus))
+
+-> on va modifier notre role dans phpMyAdmin pour se mettre le ROLE_AUTHOR à la place du ROLE_USER
+une fois reconnecté nous avons accés à la page Rédaction d'article et on a le bouton dans la nav.
+
+On peut donner une hierarchie au role:
+->config->packages->security.yaml
+=>  On indique le code à la fin de la page
+   role_hierarchy:
+           ROLE_AUTHOR: ROLE_USER
+           ROLE_EDITOR: ROLE_AUTHOR
+           ROLE_ADMIN: ROLE_EDITOR
+     

@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Post;
 use App\Entity\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -28,6 +29,7 @@ class PostController extends AbstractController
     /**
      * Page permettant de créer un article.
      * http://localhost:8000/dashboard/post/create
+     * @IsGranted("ROLE_AUTHOR")
      * @Route("/create", name="post_create", methods={"GET|POST"})
      *
      */

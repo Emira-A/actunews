@@ -15,7 +15,24 @@
             <a class="nav-link" href="{{ path('default_category', {'alias' : 'culture'}) }}">Culture</a>
         </div>
         <div class="navbar-nav ml-auto">
-            <a class="nav-link" href="{{ path('post_create') }}">Rédiger un article</a>
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {# Dans cette condition mon utilisateur est connecté #}
+                <a href="#" class="nav-link">Bonjour {{ app.user.firstname }}</a>
+
+                {% if is_granted('ROLE_AUTHOR') %}
+                    <a class="nav-link" href="{{ path('post_create') }}">Rédiger un article</a>
+                {% endif%}
+
+                <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+            {% else %}
+                <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                <a class="nav-link" href="{{ path('user_register') }}">Inscription</a>
+            {% endif %}
+
+
         </div>
     </div>
 </nav>
+
+{# {{ dump(app.user) }} #}
